@@ -18,8 +18,6 @@ TEST_P(SudokuSolverDataDrivenTest, _) {
     EXPECT_TRUE(GetParam().expected_result == is_resolvable);
     EXPECT_TRUE(GetParam().initial_board == board_copy);
     EXPECT_TRUE(GetParam().expected_board == output_board);
-
-    std::cout << output_board << std::endl;
 }
 
 // Edge case tests
