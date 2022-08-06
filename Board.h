@@ -10,6 +10,7 @@ namespace Board {
 
     // std::array was chosen because we know the size in compile time
     using row_t = std::array<char, BOARD_SIZE>;
+    using grid_t = row_t;
 
     // std::array was chosen because we know the size in compile time
     using board_t = std::array<row_t, BOARD_SIZE>;
@@ -24,21 +25,15 @@ namespace Board {
 
         Board get_grids() const;
 
-        row_t& row_at(const size_t row_index) {
-            return board_.at(row_index);
-        }
+        grid_t grid_at(const size_t row_index, const size_t col_index) const;
 
-        row_t row_at(const size_t row_index) const {
-            return board_.at(row_index);
-        }
+        row_t& row_at(const size_t row_index);
 
-        char& elem_at(const size_t row_index, const size_t column_index) {
-            return board_.at(row_index).at(column_index);
-        }
+        row_t row_at(const size_t row_index) const;
 
-        char elem_at(const size_t row_index, const size_t column_index) const {
-            return board_.at(row_index).at(column_index);
-        }
+        char& elem_at(const size_t row_index, const size_t col_index);
+
+        char elem_at(const size_t row_index, const size_t col_index) const;
 
         size_t board_size() const;
 

@@ -17,6 +17,35 @@ namespace Board {
         return transposed_board;
     }
 
+    grid_t Board::grid_at(const size_t row_index, const size_t col_index) const {
+        auto rounded_row_index = row_index / GRID_SIZE * GRID_SIZE;
+        auto rounded_col_index = col_index / GRID_SIZE * GRID_SIZE;
+
+        grid_t result_grid;
+        for(size_t i = rounded_row_index, k = 0; i < rounded_row_index + GRID_SIZE; ++i) {
+            for(size_t j = rounded_col_index; j < rounded_col_index + GRID_SIZE; ++j, ++k) {
+                result_grid[k] = board_[i][j];
+            }
+        }
+        return result_grid;
+    }
+
+    row_t& Board::row_at(const size_t row_index) {
+        return board_.at(row_index);
+    }
+
+    row_t Board::row_at(const size_t row_index) const {
+        return board_.at(row_index);
+    }
+
+    char &Board::elem_at(const size_t row_index, const size_t col_index) {
+        return board_.at(row_index).at(col_index);
+    }
+
+    char Board::elem_at(const size_t row_index, const size_t col_index) const {
+        return board_.at(row_index).at(col_index);
+    }
+
     Board Board::get_grids() const {
         board_t grids;
         for(size_t row_grid_i = 0; row_grid_i < GRID_SIZE; ++row_grid_i) {
