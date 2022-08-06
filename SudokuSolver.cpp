@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <unordered_set>
+
 #include "SudokuSolver.h"
 
 // Verify that there is no the same elements in the set (except empty cell that may repeat several times)

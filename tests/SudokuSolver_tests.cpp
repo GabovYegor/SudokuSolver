@@ -155,7 +155,7 @@ namespace IncorrectBoardRegressionTest
 }
 
 // Positive tests
-namespace EasyBoard_RegressionTest
+namespace EasyBoardRegressionTest
 {
     const Board::Board initial_board =
         Board::board_t { Board::row_t{ 0, 1, 3, 8, 0, 0, 4, 0, 5 },
@@ -183,12 +183,12 @@ namespace EasyBoard_RegressionTest
                                          { 1, 7, 2, 4, 6, 8, 3, 5, 9 },
             };
 
-    INSTANTIATE_TEST_SUITE_P(EasyBoard_RegressionTest,
+    INSTANTIATE_TEST_SUITE_P(EasyBoardRegressionTest,
                              SudokuSolverDataDrivenTest,
                              testing::Values(TestInputData{initial_board, expected_result, expected_board}));
 }
 
-namespace ComplexBoard_RegressionTest
+namespace ComplexBoardRegressionTest
 {
     const Board::Board initial_board =
             Board::board_t { Board::row_t{ 0, 0, 2, 0, 0, 0, 0, 4, 1 },
@@ -216,7 +216,7 @@ namespace ComplexBoard_RegressionTest
                              { 8, 5, 3, 1, 2, 6, 4, 9, 7 },
             };
 
-    INSTANTIATE_TEST_SUITE_P(ComplexBoard_RegressionTest,
+    INSTANTIATE_TEST_SUITE_P(ComplexBoardRegressionTest,
                              SudokuSolverDataDrivenTest,
                              testing::Values(TestInputData{initial_board, expected_result, expected_board}));
 }
