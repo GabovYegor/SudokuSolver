@@ -46,20 +46,6 @@ namespace Board {
         return board_.at(row_index).at(col_index);
     }
 
-    Board Board::get_grids() const {
-        board_t grids;
-        for(size_t row_grid_i = 0; row_grid_i < GRID_SIZE; ++row_grid_i) {
-            for(size_t column_grid_i = 0; column_grid_i < GRID_SIZE; ++column_grid_i) {
-                for (size_t i = row_grid_i * GRID_SIZE, k = 0; i < row_grid_i * GRID_SIZE + GRID_SIZE; ++i) {
-                    for (size_t j = column_grid_i * GRID_SIZE; j < column_grid_i * GRID_SIZE + GRID_SIZE; ++j, ++k) {
-                        grids[row_grid_i * GRID_SIZE + column_grid_i][k] = board_[i][j];
-                    }
-                }
-            }
-        }
-        return grids;
-    }
-
     size_t Board::board_size() const {
         return board_.size();
     }

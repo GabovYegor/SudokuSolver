@@ -1,5 +1,6 @@
 #include "SudokuSolver.h"
 
+// Verify that there is no the same elements in the set (except empty cell that may repeat several times)
 static bool is_set_satisfy_sudoku_rules(const Board::row_t& set) {
     const auto number_of_non_empty_el = std::count_if(set.begin(), set.end(),
                                                       [](auto el){ return el != Board::EMPTY_CELL; });
@@ -11,27 +12,6 @@ static bool is_set_satisfy_sudoku_rules(const Board::row_t& set) {
     if(unique_set.size() != number_of_non_empty_el)
         return false;
     return true;
-}
-
-static bool is_set_satisfy_sudoku_rules(const Board::Board& set) {
-    for(const auto& subset : set) {
-        if(!is_set_satisfy_sudoku_rules(subset)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-static bool verify_sudoku_row_rule(const Board::Board& board) {
-    return is_set_satisfy_sudoku_rules(board);
-}
-
-static bool verify_sudoku_column_rule(const Board::Board& board) {
-    return is_set_satisfy_sudoku_rules(board.get_transposed_board());
-}
-
-static bool verify_sudoku_grid_rule(const Board::Board& board) {
-    return is_set_satisfy_sudoku_rules(board.get_grids());
 }
 
 static bool verify_sudoku_row_rule(const Board::Board& board, const size_t row_index, const size_t col_index) {
@@ -46,40 +26,47 @@ static bool verify_sudoku_grid_rule(const Board::Board& board, const size_t row_
     return is_set_satisfy_sudoku_rules(board.grid_at(row_index, col_index));
 }
 
-// Verify all Sudoku rules
-static bool verify_sudoku(const Board::Board& board) {
-    // 1. Verify that there are no the same elements in the row
-    if(!verify_sudoku_row_rule(board))
-        return false;
-
-    // 2. Verify that there are no the same elements in the column
-    if(!verify_sudoku_column_rule(board))
-        return false;
-
-    // 3. Verify that there are no the same elements in the grid
-    if(!verify_sudoku_grid_rule(board))
-        return false;
-
-    return true;
-}
-
-// Verify all Sudoku rules
+// Verify all Sudoku rules for one element
 static bool verify_sudoku(const Board::Board& board, const size_t row_index, const size_t col_index) {
-    // 1. Verify that there are no the same elements in the row
+    // Verify that there are no the same elements in the row
     if(!verify_sudoku_row_rule(board, row_index, col_index))
         return false;
 
-    // 2. Verify that there are no the same elements in the column
+    // Verify that there are no the same elements in the column
     if(!verify_sudoku_column_rule(board, row_index, col_index))
         return false;
 
-    // 3. Verify that there are no the same elements in the grid
+    // Verify that there are no the same elements in the grid
     if(!verify_sudoku_grid_rule(board, row_index, col_index))
         return false;
 
     return true;
 }
 
+// Verify all Sudoku rules for all elements
+static bool verify_sudoku(const Board::Board& board) {
+    for(size_t i = 0; i < board.board_size(); ++i) {
+        for (size_t j = 0; j < board.board_size(); ++j) {
+            if(!verify_sudoku(board, i, j)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Here is implementation of Sudoku solver algorithm that uses backtracking
+// It works in several steps:
+// 1. Find empty cell
+//    If there are no empty cell go to step 4
+// 2. Pick number for the cell that fulfill all Sudoku rules
+//    If it's not possible to pick the number that fulfill all Sudoku rules - take a step back
+//    If it's not possible to pick the number and it's not possible to take step back - go to the step 3
+//    If number was picked successfully - go to the step 1
+// 3. If we are on this step - this means that there are no solutions for the Sudoku.
+//    In this case function return false and empty board
+// 4. If we are on this step - this means that sudoku was resolved.
+//    In this case function return true and the board that is a solution of the given Sudoku
 static bool solve_sudoku_impl(Board::Board& board) {
     for(size_t i = 0; i < board.board_size(); ++i) {
         for (size_t j = 0; j < board.board_size(); ++j) {
@@ -97,7 +84,7 @@ static bool solve_sudoku_impl(Board::Board& board) {
                         }
                     }
                 }
-                if(!verify_sudoku(board)) {
+                if(!verify_sudoku(board, i, j)) {
                     board.elem_at(i, j) = Board::EMPTY_CELL;
                     return false;
                 }
@@ -108,15 +95,18 @@ static bool solve_sudoku_impl(Board::Board& board) {
 }
 
 namespace SudokuSolver {
+    // Wrapper around implementation
     std::pair<bool, Board::Board> solve_sudoku(const Board::Board &board) {
         auto copied_board = board;
-        const auto is_resolvable = solve_sudoku_impl(copied_board);
+        auto is_resolvable = solve_sudoku_impl(copied_board);
+        // To avoid edge cases (according to ideas of defensive programming)
+        is_resolvable = is_resolvable && verify_sudoku(copied_board);
         // If not resolvable - return empty board
         if(!is_resolvable) {
-            Board::board_t empty_board_t;
-            for(auto& empty_row : empty_board_t)
+            Board::board_t empty_board;
+            for(auto& empty_row : empty_board)
                 std::fill(empty_row.begin(), empty_row.end(), 0);
-            return { is_resolvable, empty_board_t };
+            return {is_resolvable, empty_board };
         }
         return {is_resolvable, copied_board};
     }

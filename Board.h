@@ -10,6 +10,7 @@ namespace Board {
 
     // std::array was chosen because we know the size in compile time
     using row_t = std::array<char, BOARD_SIZE>;
+    using column_t = row_t;
     using grid_t = row_t;
 
     // std::array was chosen because we know the size in compile time
@@ -22,8 +23,6 @@ namespace Board {
         Board get_board() const;
 
         Board get_transposed_board() const;
-
-        Board get_grids() const;
 
         grid_t grid_at(const size_t row_index, const size_t col_index) const;
 
