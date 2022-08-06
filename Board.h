@@ -4,9 +4,9 @@
 #include <iostream>
 
 namespace Board {
-    constexpr char EMPTY_CELL = 0;
-    constexpr char BOARD_SIZE = 9;
-    constexpr char GRID_SIZE = BOARD_SIZE / 3;
+    constexpr size_t EMPTY_CELL = 0;
+    constexpr size_t BOARD_SIZE = 9;
+    constexpr size_t GRID_SIZE = BOARD_SIZE / 3;
 
     // std::array was chosen because we know the size in compile time
     using row_t = std::array<char, BOARD_SIZE>;
@@ -16,61 +16,35 @@ namespace Board {
 
     class Board {
     public:
-        Board(const board_t& board) : board_{ board } {}
+        Board(const board_t& board);
 
-        void print() const {
-            std::cout << "-------------------------------------------" << std::endl;
-            for (const auto row: board_) {
-                for (const auto el: row) {
-                    std::cout << static_cast<int>(el) << ' ';
-                }
-                std::cout << std::endl;
-            }
+        Board get_transposed_board() const;
+
+        Board get_grids() const;
+
+        row_t& row_at(const size_t row_index) {
+            return board_.at(row_index);
         }
 
-        Board get_transposed_board() const {
-            board_t transposed_board;
-            for(size_t i = 0; i < board_.size(); ++i) {
-                for(size_t j = 0; j < board_[i].size(); ++j) {
-                    transposed_board[j][i] = board_[i][j];
-                }
-            }
-            return transposed_board;
+        char& elem_at(const size_t row_index, const size_t column_index) {
+            return board_.at(row_index).at(column_index);
         }
 
-        Board get_grids() const {
-            board_t grids;
+        size_t board_size();
 
-            for(size_t row_grid_i = 0; row_grid_i < GRID_SIZE; ++row_grid_i) {
-                for(size_t column_grid_i = 0; column_grid_i < GRID_SIZE; ++column_grid_i) {
-                    for (size_t i = row_grid_i * GRID_SIZE, k = 0; i < row_grid_i * GRID_SIZE + GRID_SIZE; ++i) {
-                        for (size_t j = column_grid_i * GRID_SIZE; j < column_grid_i * GRID_SIZE + GRID_SIZE; ++j, ++k) {
-                            grids[row_grid_i * GRID_SIZE + column_grid_i][k] = board_[i][j];
-                        }
-                    }
-                }
-            }
-            return grids;
-        }
+        board_t::iterator begin();
+        board_t::const_iterator begin() const;
 
-        auto begin() {
-            return board_.begin();
-        }
+        board_t::iterator end();
+        board_t::const_iterator end() const;
 
-        auto begin() const {
-            return board_.begin();
-        }
+        friend std::ostream& operator<<(std::ostream &os, const Board &p);
 
-        auto end() {
-            return board_.end();
-        }
-
-        auto end() const {
-            return board_.end();
-        }
-
+    private:
         // The inner array is an array of row's elements
         // The outer array is an array of rows
         board_t board_;
     };
+
+    std::ostream& operator<<(std::ostream &os, const Board &p);
 }

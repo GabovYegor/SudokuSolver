@@ -37,8 +37,8 @@ int main() {
                         { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     };
 
-    Board::Board b { test_board_3 };
+    Board::Board b { test_board_1 };
     auto [is_resolvable, output_board] = SudokuSolver::solve_sudoku(b);
-    output_board.print();
+    std::cout << output_board << std::endl;
     return 0;
 }

@@ -44,15 +44,16 @@ static bool verify_sudoku(const Board::Board &board) {
 }
 
 static bool solve_sudoku_impl(Board::Board& board) {
-    for(size_t i = 0; i < board.board_.size(); ++i) {
-        for (size_t j = 0; j < board.board_[i].size(); ++j) {
-            if(board.board_[i][j] == Board::EMPTY_CELL) {
+    for(size_t i = 0; i < board.board_size(); ++i) {
+        for (size_t j = 0; j < board.board_size(); ++j) {
+            if(board.elem_at(i, j) == Board::EMPTY_CELL) {
+                // Go through all possible solutions
                 for(char possible_sln = 1; possible_sln <= 9; ++possible_sln) {
-                    board.board_[i][j] = possible_sln;
+                    board.elem_at(i, j) = possible_sln;
                     if(verify_sudoku(board)) {
                         auto res = solve_sudoku_impl(board);
                         if(!res) {
-                            board.board_[i][j] = Board::EMPTY_CELL;
+                            board.elem_at(i, j) = Board::EMPTY_CELL;
                         }
                         else {
                             return true;
@@ -60,7 +61,7 @@ static bool solve_sudoku_impl(Board::Board& board) {
                     }
                 }
                 if(!verify_sudoku(board)) {
-                    board.board_[i][j] = Board::EMPTY_CELL;
+                    board.elem_at(i, j) = Board::EMPTY_CELL;
                     return false;
                 }
             }
