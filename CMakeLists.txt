@@ -9,9 +9,9 @@ set(HEADER_FILES
     )
 
 set(SOURCE_FILES
-    main.cpp
     Board.cpp
     SudokuSolver.cpp
     )
 
-add_executable(SudokuSolver ${HEADER_FILES} ${SOURCE_FILES})
+add_library(SudokuSolver ${HEADER_FILES} ${SOURCE_FILES})
+add_subdirectory(tests)

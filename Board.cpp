@@ -3,6 +3,10 @@
 namespace Board {
     Board::Board(const board_t &board) : board_{ board } {}
 
+    Board Board::get_board() const {
+        return board_;
+    }
+
     Board Board::get_transposed_board() const {
         board_t transposed_board;
         for(size_t i = 0; i < board_.size(); ++i) {
@@ -27,7 +31,7 @@ namespace Board {
         return grids;
     }
 
-    size_t Board::board_size() {
+    size_t Board::board_size() const {
         return board_.size();
     }
 
@@ -55,5 +59,9 @@ namespace Board {
             os << std::endl;
         }
         return os;
+    }
+
+    bool operator==(const Board &lhs, const Board &rhs) {
+       return lhs.board_ == rhs.board_;
     }
 }

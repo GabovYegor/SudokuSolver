@@ -25,18 +25,6 @@ int main() {
                         { 5, 9, 4, 7, 6, 8, 2, 3, 1 },
     };
 
-    Board::board_t test_board_3 = {
-            Board::row_t{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-    };
-
     Board::Board b { test_board_1 };
     auto [is_resolvable, output_board] = SudokuSolver::solve_sudoku(b);
     std::cout << output_board << std::endl;

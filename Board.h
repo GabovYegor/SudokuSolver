@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace Board {
-    constexpr size_t EMPTY_CELL = 0;
+    constexpr char EMPTY_CELL = 0;
     constexpr size_t BOARD_SIZE = 9;
     constexpr size_t GRID_SIZE = BOARD_SIZE / 3;
 
@@ -18,6 +18,8 @@ namespace Board {
     public:
         Board(const board_t& board);
 
+        Board get_board() const;
+
         Board get_transposed_board() const;
 
         Board get_grids() const;
@@ -26,11 +28,19 @@ namespace Board {
             return board_.at(row_index);
         }
 
+        row_t row_at(const size_t row_index) const {
+            return board_.at(row_index);
+        }
+
         char& elem_at(const size_t row_index, const size_t column_index) {
             return board_.at(row_index).at(column_index);
         }
 
-        size_t board_size();
+        char elem_at(const size_t row_index, const size_t column_index) const {
+            return board_.at(row_index).at(column_index);
+        }
+
+        size_t board_size() const;
 
         board_t::iterator begin();
         board_t::const_iterator begin() const;
@@ -39,6 +49,7 @@ namespace Board {
         board_t::const_iterator end() const;
 
         friend std::ostream& operator<<(std::ostream &os, const Board &p);
+        friend bool operator==(const Board& lhs, const Board& rhs);
 
     private:
         // The inner array is an array of row's elements
@@ -47,4 +58,6 @@ namespace Board {
     };
 
     std::ostream& operator<<(std::ostream &os, const Board &p);
+
+    bool operator==(const Board& lhs, const Board& rhs);
 }
