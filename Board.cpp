@@ -38,11 +38,11 @@ namespace Board {
         return board_.at(row_index);
     }
 
-    char &Board::elem_at(const size_t row_index, const size_t col_index) {
+    elem_t &Board::elem_at(const size_t row_index, const size_t col_index) {
         return board_.at(row_index).at(col_index);
     }
 
-    char Board::elem_at(const size_t row_index, const size_t col_index) const {
+    elem_t Board::elem_at(const size_t row_index, const size_t col_index) const {
         return board_.at(row_index).at(col_index);
     }
 

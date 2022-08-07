@@ -7,7 +7,7 @@
 static bool is_set_satisfy_sudoku_rules(const Board::row_t& set) {
     const auto number_of_non_empty_el = std::count_if(set.begin(), set.end(),
                                                       [](auto el){ return el != Board::EMPTY_CELL; });
-    std::unordered_set<char> unique_set;
+    std::unordered_set<Board::elem_t> unique_set;
     for(const auto el : set) {
         unique_set.emplace(el);
     }
@@ -48,7 +48,7 @@ static bool verify_sudoku_impl(const Board::Board& board, const size_t row_index
 
 // Insert element at the set position and verify all sudoku rules for it
 static bool verify_sudoku(const Board::Board& board, const size_t row_index,
-                          const size_t col_index, const char new_el) {
+                          const size_t col_index, const Board::elem_t new_el) {
     auto board_with_new_element = board;
     board_with_new_element.elem_at(row_index, col_index) = new_el;
     return verify_sudoku_impl(board_with_new_element, row_index, col_index);
@@ -88,7 +88,7 @@ static bool solve_sudoku_impl(Board::Board& board) {
         for (size_t j = 0; j < board.board_size(); ++j) {
             if(board.elem_at(i, j) == Board::EMPTY_CELL) {
                 // Go through all possible solutions
-                for(char possible_sln = 1; possible_sln <= 9; ++possible_sln) {
+                for(Board::elem_t possible_sln = 1; possible_sln <= 9; ++possible_sln) {
                     if(verify_sudoku(board, i, j, possible_sln)) {
                         board.elem_at(i, j) = possible_sln;
                         auto res = solve_sudoku_impl(board);

@@ -4,12 +4,14 @@
 #include <iostream>
 
 namespace Board {
-    constexpr char EMPTY_CELL = 0;
+    using elem_t = uint8_t;
+
+    constexpr elem_t EMPTY_CELL = 0;
     constexpr size_t BOARD_SIZE = 9;
     constexpr size_t GRID_SIZE = BOARD_SIZE / 3;
 
     // std::array was chosen because we know the size in compile time
-    using row_t = std::array<char, BOARD_SIZE>;
+    using row_t = std::array<elem_t, BOARD_SIZE>;
     using column_t = row_t;
     using grid_t = row_t;
 
@@ -30,9 +32,9 @@ namespace Board {
 
         row_t row_at(const size_t row_index) const;
 
-        char& elem_at(const size_t row_index, const size_t col_index);
+        elem_t& elem_at(const size_t row_index, const size_t col_index);
 
-        char elem_at(const size_t row_index, const size_t col_index) const;
+        elem_t elem_at(const size_t row_index, const size_t col_index) const;
 
         size_t board_size() const;
 
