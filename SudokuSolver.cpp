@@ -30,7 +30,7 @@ static bool verify_sudoku_grid_rule(const Board::Board& board, const size_t row_
 }
 
 // Verify all Sudoku rules for one element
-static bool verify_sudoku(const Board::Board& board, const size_t row_index, const size_t col_index) {
+static bool verify_sudoku_impl(const Board::Board& board, const size_t row_index, const size_t col_index) {
     // Verify that there are no the same elements in the row
     if(!verify_sudoku_row_rule(board, row_index, col_index))
         return false;
@@ -44,6 +44,19 @@ static bool verify_sudoku(const Board::Board& board, const size_t row_index, con
         return false;
 
     return true;
+}
+
+// Insert element at the set position and verify all sudoku rules for it
+static bool verify_sudoku(const Board::Board& board, const size_t row_index,
+                          const size_t col_index, const char new_el) {
+    auto board_with_new_element = board;
+    board_with_new_element.elem_at(row_index, col_index) = new_el;
+    return verify_sudoku_impl(board_with_new_element, row_index, col_index);
+}
+
+// Verify sudoku rules for the element at the set position
+static bool verify_sudoku(const Board::Board& board, const size_t row_index, const size_t col_index) {
+    return verify_sudoku_impl(board, row_index, col_index);
 }
 
 // Verify all Sudoku rules for all elements
@@ -76,8 +89,8 @@ static bool solve_sudoku_impl(Board::Board& board) {
             if(board.elem_at(i, j) == Board::EMPTY_CELL) {
                 // Go through all possible solutions
                 for(char possible_sln = 1; possible_sln <= 9; ++possible_sln) {
-                    board.elem_at(i, j) = possible_sln;
-                    if(verify_sudoku(board, i, j)) {
+                    if(verify_sudoku(board, i, j, possible_sln)) {
+                        board.elem_at(i, j) = possible_sln;
                         auto res = solve_sudoku_impl(board);
                         if(!res) {
                             board.elem_at(i, j) = Board::EMPTY_CELL;
@@ -87,10 +100,7 @@ static bool solve_sudoku_impl(Board::Board& board) {
                         }
                     }
                 }
-                if(!verify_sudoku(board, i, j)) {
-                    board.elem_at(i, j) = Board::EMPTY_CELL;
-                    return false;
-                }
+                return false;
             }
         }
     }
