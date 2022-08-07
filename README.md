@@ -13,8 +13,9 @@ Minimum required version is **3.16**. Install from [here](https://cmake.org/down
 
 ```sh
 git clone https://github.com/GabovYegor/SudokuSolver.git <SudokuSolver-source-dir>
-cd <SudokuSolver-source-dir>
+pushd <SudokuSolver-source-dir>
 git checkout main
+popd
 cmake -S <SudokuSolver-source-dir> -B <SudokuSolver-build-dir>
 cmake --build <SudokuSolver-build-dir> --config Release
 ```
