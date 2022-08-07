@@ -44,6 +44,7 @@ namespace Board {
         board_t::iterator end();
         board_t::const_iterator end() const;
 
+        // Mark methods below as 'friend' to have access to the class's private data
         friend std::ostream& operator<<(std::ostream &os, const Board &p);
         friend bool operator==(const Board& lhs, const Board& rhs);
 

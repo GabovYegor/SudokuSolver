@@ -7,6 +7,7 @@
 static bool is_set_satisfy_sudoku_rules(const Board::row_t& set) {
     const auto number_of_non_empty_el = std::count_if(set.begin(), set.end(),
                                                       [](auto el){ return el != Board::EMPTY_CELL; });
+    // std::unordered_set contains only unique elements by definition
     std::unordered_set<Board::elem_t> unique_set;
     for(const auto el : set) {
         unique_set.emplace(el);
